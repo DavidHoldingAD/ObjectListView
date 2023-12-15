@@ -1,186 +1,180 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System.Diagnostics;
 using System.Data;
-using System.Windows.Forms;
 using BrightIdeasSoftware;
 
-namespace ObjectListViewDemo
+namespace ObjectListViewDemo;
+
+public partial class TabDataSet : OlvDemoTab
 {
-    public partial class TabDataSet : OlvDemoTab {
 
-        public TabDataSet() {
-            InitializeComponent();
-            this.ListView = this.olvData;
-        }
+	public TabDataSet()
+	{
+		InitializeComponent();
+		ListView = olvData;
+	}
 
-        protected override void InitializeTab() {
+	protected override void InitializeTab()
+	{
 
-            this.comboBoxView.SelectedIndex = 4;
-            this.comboBoxEditable.SelectedIndex = 0;
-            this.rowHeightUpDown.Value = 32;
+		comboBoxView.SelectedIndex = 4;
+		comboBoxEditable.SelectedIndex = 0;
+		rowHeightUpDown.Value = 32;
 
-            SetupColumns();
-            SetupCellFormatting();
+		SetupColumns();
+		SetupCellFormatting();
 
-            ReloadDataGridAndListView();
-        }
+		ReloadDataGridAndListView();
+	}
 
-        private void SetupCellFormatting() {
+	private void SetupCellFormatting()
+	{
 
-            // Setup cell formatting so that any cell that contains of the following colours
-            // will have a foreground text of the same colour. If you prefix the colour with
-            // "bk-" the colour will be applied to the background instead.
-            // Similarly, if the text contains "bold", "italic", "underline" or "strikeout"...
-            // well... you get the picture :)
-            
-            string[] colorNames = new string[] { "red", "green", "blue", "yellow", "black", "white" };
+		// Setup cell formatting so that any cell that contains of the following colours
+		// will have a foreground text of the same colour. If you prefix the colour with
+		// "bk-" the colour will be applied to the background instead.
+		// Similarly, if the text contains "bold", "italic", "underline" or "strikeout"...
+		// well... you get the picture :)
 
-            this.olvData.UseCellFormatEvents = true;
-            this.olvData.FormatCell += delegate(object sender, FormatCellEventArgs e) {
-                string text = e.SubItem.Text.ToLowerInvariant();
-                foreach (string name in colorNames) {
-                    if (text.Contains(name)) {
-                        if (text.Contains("bk-" + name))
-                            e.SubItem.BackColor = Color.FromName(name);
-                        else
-                            e.SubItem.ForeColor = Color.FromName(name);
-                    }
-                }
-                FontStyle style = FontStyle.Regular;
-                if (text.Contains("bold"))
-                    style |= FontStyle.Bold;
-                if (text.Contains("italic"))
-                    style |= FontStyle.Italic;
-                if (text.Contains("underline"))
-                    style |= FontStyle.Underline;
-                if (text.Contains("strikeout"))
-                    style |= FontStyle.Strikeout;
+		string[] colorNames = new string[] { "red", "green", "blue", "yellow", "black", "white" };
 
-                if (style != FontStyle.Regular)
-                    e.SubItem.Font = new Font(e.SubItem.Font, style);
-            };
-        }
+		olvData.UseCellFormatEvents = true;
+		olvData.FormatCell += delegate (object sender, FormatCellEventArgs e)
+		{
+			string text = e.SubItem.Text.ToLowerInvariant();
+			foreach (string name in colorNames)
+			{
+				if (text.Contains(name))
+				{
+					if (text.Contains("bk-" + name))
+					{
+						e.SubItem.BackColor = Color.FromName(name);
+					}
+					else
+					{
+						e.SubItem.ForeColor = Color.FromName(name);
+					}
+				}
+			}
+			FontStyle style = FontStyle.Regular;
+			if (text.Contains("bold"))
+			{
+				style |= FontStyle.Bold;
+			}
 
-        private void SetupColumns() {
+			if (text.Contains("italic"))
+			{
+				style |= FontStyle.Italic;
+			}
 
-            // DataListView are for the laziest of developers, so we really don't need any code to make it just work.
-            // But with these couple of lines, we give each row an icon, and improve the grouping of a couple of columns
+			if (text.Contains("underline"))
+			{
+				style |= FontStyle.Underline;
+			}
 
-            this.olvColumn1.ImageGetter = delegate(object row) { return "user"; };
+			if (text.Contains("strikeout"))
+			{
+				style |= FontStyle.Strikeout;
+			}
 
-            this.salaryColumn.MakeGroupies(
-                new UInt32[] {20000, 100000},
-                new string[] {"Lowly worker", "Middle management", "Rarified elevation"});
+			if (style != FontStyle.Regular)
+			{
+				e.SubItem.Font = new Font(e.SubItem.Font, style);
+			}
+		};
+	}
 
-            this.heightColumn.MakeGroupies(
-                new Double[] {1.50, 1.70, 1.85},
-                new string[] {"Shortie", "Normal", "Tall", "Really tall"});
-        }
+	private void SetupColumns()
+	{
 
-        private void ReloadDataGridAndListView() {
-            DataSet ds = LoadXmlIntoDataGrid();
+		// DataListView are for the laziest of developers, so we really don't need any code to make it just work.
+		// But with these couple of lines, we give each row an icon, and improve the grouping of a couple of columns
 
-            if (ds != null) {
-                LoadDataSetIntoListView(ds);
-            }
-        }
+		olvColumn1.ImageGetter = delegate (object row)
+		{ return "user"; };
 
-        private DataSet LoadXmlIntoDataGrid() {
-            DataSet ds = Coordinator.LoadDatasetFromXml(@"Data\Persons.xml");
+		salaryColumn.MakeGroupies(
+			new uint[] { 20000, 100000 },
+			new string[] { "Lowly worker", "Middle management", "Rarified elevation" });
 
-            if (ds.Tables.Count <= 0) {
-                Coordinator.ShowMessage(@"Failed to load data set from Data\Persons.xml");
-                return null;
-            }
+		heightColumn.MakeGroupies(
+			new double[] { 1.50, 1.70, 1.85 },
+			new string[] { "Shortie", "Normal", "Tall", "Really tall" });
+	}
 
-            this.dataGridView1.DataSource = ds;
-            this.dataGridView1.DataMember = "Person";
+	private void ReloadDataGridAndListView()
+	{
+		DataSet ds = LoadXmlIntoDataGrid();
 
-            return ds;
-        }
+		if (ds != null)
+		{
+			LoadDataSetIntoListView(ds);
+		}
+	}
 
-        private void LoadDataSetIntoListView(DataSet ds) {
+	private DataSet LoadXmlIntoDataGrid()
+	{
+		DataSet ds = Coordinator.LoadDatasetFromXml(@"Data\Persons.xml");
 
-            // Install this data source
-            
-            // DataListView can bind to many different types of data source.
-            // You can also set up a BindingSource in the designer and assign that 
-            // to the DataListView, removing the need to even write a single line of code.
+		if (ds.Tables.Count <= 0)
+		{
+			Coordinator.ShowMessage(@"Failed to load data set from Data\Persons.xml");
+			return null;
+		}
 
-            // Test with BindingSource
-            this.olvData.DataSource = new BindingSource(ds, "Person");
+		dataGridView1.DataSource = ds;
+		dataGridView1.DataMember = "Person";
 
-            // Test with DataTable
-            //DataTable personTable = ds.Tables["Person"];
-            //this.olvData.DataSource = personTable;
+		return ds;
+	}
 
-            // Test with DataView
-            //DataTable personTable = ds.Tables["Person"];
-            //this.olvData.DataSource = new DataView(personTable);
+	private void LoadDataSetIntoListView(DataSet ds) =>
 
-            // Test with DataSet
-            //this.olvData.DataMember = "Person";
-            //this.olvData.DataSource = ds;
+		// Install this data source
 
-            // Test with DataViewManager
-            //this.olvData.DataMember = "Person";
-            //this.olvData.DataSource = new DataViewManager(ds);
+		// DataListView can bind to many different types of data source.
+		// You can also set up a BindingSource in the designer and assign that 
+		// to the DataListView, removing the need to even write a single line of code.
 
-            // Test with nulls
-            //this.olvData.DataMember = null;
-            //this.olvData.DataSource = null;
-        }
+		// Test with BindingSource
+		olvData.DataSource = new BindingSource(ds, "Person");// Test with DataTable//DataTable personTable = ds.Tables["Person"];//this.olvData.DataSource = personTable;// Test with DataView//DataTable personTable = ds.Tables["Person"];//this.olvData.DataSource = new DataView(personTable);// Test with DataSet//this.olvData.DataMember = "Person";//this.olvData.DataSource = ds;// Test with DataViewManager//this.olvData.DataMember = "Person";//this.olvData.DataSource = new DataViewManager(ds);// Test with nulls//this.olvData.DataMember = null;//this.olvData.DataSource = null;
 
-        #region UI event handlers 
+	#region UI event handlers 
 
-        private void buttonResetData_Click(object sender, EventArgs e) {
-            Stopwatch stopWatch = Stopwatch.StartNew();
+	private void buttonResetData_Click(object sender, EventArgs e)
+	{
+		Stopwatch stopWatch = Stopwatch.StartNew();
 
-            try {
-                this.Cursor = Cursors.WaitCursor;
-                this.ReloadDataGridAndListView();
-            }
-            finally {
-                stopWatch.Stop();
-                this.Cursor = Cursors.Default;
-            }
+		try
+		{
+			Cursor = Cursors.WaitCursor;
+			ReloadDataGridAndListView();
+		}
+		finally
+		{
+			stopWatch.Stop();
+			Cursor = Cursors.Default;
+		}
 
-            Coordinator.ToolStripStatus1 =
-                String.Format("XML Load: {0} items in {1}ms, average per item: {2:F}ms",
-                    olvData.Items.Count,
-                    stopWatch.ElapsedMilliseconds,
-                    stopWatch.ElapsedMilliseconds / olvData.Items.Count);
-        }
+		Coordinator.ToolStripStatus1 =
+			string.Format("XML Load: {0} items in {1}ms, average per item: {2:F}ms",
+				olvData.Items.Count,
+				stopWatch.ElapsedMilliseconds,
+				stopWatch.ElapsedMilliseconds / olvData.Items.Count);
+	}
 
-        private void textBoxFilterData_TextChanged(object sender, EventArgs e) {
-            Coordinator.TimedFilter(this.ListView, ((TextBox) sender).Text);
-        }
+	private void textBoxFilterData_TextChanged(object sender, EventArgs e) => Coordinator.TimedFilter(ListView, ((TextBox)sender).Text);
 
-        private void checkBoxGroups_CheckedChanged(object sender, EventArgs e) {
-            Coordinator.ShowGroupsChecked(this.ListView, (CheckBox) sender);
-        }
+	private void checkBoxGroups_CheckedChanged(object sender, EventArgs e) => Coordinator.ShowGroupsChecked(ListView, (CheckBox)sender);
 
-        private void checkBoxItemCounts_CheckedChanged(object sender, EventArgs e) {
-            Coordinator.ShowLabelsOnGroupsChecked(this.ListView, (CheckBox) sender);
-        }
+	private void checkBoxItemCounts_CheckedChanged(object sender, EventArgs e) => Coordinator.ShowLabelsOnGroupsChecked(ListView, (CheckBox)sender);
 
-        private void checkBoxPause_CheckedChanged(object sender, EventArgs e) {
-            this.ListView.PauseAnimations(((CheckBox) sender).Checked);
-        }
+	private void checkBoxPause_CheckedChanged(object sender, EventArgs e) => ListView.PauseAnimations(((CheckBox)sender).Checked);
 
-        private void comboBoxView_SelectedIndexChanged(object sender, EventArgs e) {
-            Coordinator.ChangeView(this.ListView, (ComboBox) sender);
-        }
+	private void comboBoxView_SelectedIndexChanged(object sender, EventArgs e) => Coordinator.ChangeView(ListView, (ComboBox)sender);
 
-        private void comboBoxEditable_SelectedIndexChanged(object sender, EventArgs e) {
-            Coordinator.ChangeEditable(this.ListView, (ComboBox) sender);
-        }
+	private void comboBoxEditable_SelectedIndexChanged(object sender, EventArgs e) => Coordinator.ChangeEditable(ListView, (ComboBox)sender);
 
-        private void rowHeightUpDown_ValueChanged(object sender, EventArgs e) {
-            this.olvData.RowHeight = Convert.ToInt32(rowHeightUpDown.Value);
-        }
+	private void rowHeightUpDown_ValueChanged(object sender, EventArgs e) => olvData.RowHeight = Convert.ToInt32(rowHeightUpDown.Value);
 
-        #endregion
-    }
+	#endregion
 }

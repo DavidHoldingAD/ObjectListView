@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabDragAndDrop
     {
         /// <summary> 
@@ -561,4 +561,3 @@
         private System.Windows.Forms.ImageList imageListLarge;
         private System.Windows.Forms.ImageList imageListSmall;
     }
-}

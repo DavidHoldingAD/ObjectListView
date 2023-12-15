@@ -1,0 +1,64 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34302.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F2848700-C8F6-419E-9D2A-FF3590CA7AFB}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		CHANGELOG.md = CHANGELOG.md
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		editoricon.png = editoricon.png
+		global.json = global.json
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectListView", "src\ObjectListView\ObjectListView.csproj", "{609D2CF5-049C-4708-809D-1C0B7BF57A5C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectListViewDemo", "src\ObjectListViewDemo\ObjectListViewDemo.csproj", "{6C098288-075B-4083-9B53-6E94FFCD50C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListViewPrinter", "src\ListViewPrinter\ListViewPrinter.csproj", "{6D9AD07B-0286-4082-BC30-7706FB6E601F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SparkleLibrary", "src\SparkleLibrary\SparkleLibrary.csproj", "{D304B8BF-0D7A-4CDD-A50B-7FCD9A437496}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{66C74076-CEC8-4587-8CE9-4E0601C8D744}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{609D2CF5-049C-4708-809D-1C0B7BF57A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{609D2CF5-049C-4708-809D-1C0B7BF57A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{609D2CF5-049C-4708-809D-1C0B7BF57A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{609D2CF5-049C-4708-809D-1C0B7BF57A5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C098288-075B-4083-9B53-6E94FFCD50C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C098288-075B-4083-9B53-6E94FFCD50C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C098288-075B-4083-9B53-6E94FFCD50C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D9AD07B-0286-4082-BC30-7706FB6E601F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D9AD07B-0286-4082-BC30-7706FB6E601F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D9AD07B-0286-4082-BC30-7706FB6E601F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D304B8BF-0D7A-4CDD-A50B-7FCD9A437496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D304B8BF-0D7A-4CDD-A50B-7FCD9A437496}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D304B8BF-0D7A-4CDD-A50B-7FCD9A437496}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{609D2CF5-049C-4708-809D-1C0B7BF57A5C} = {66C74076-CEC8-4587-8CE9-4E0601C8D744}
+		{6C098288-075B-4083-9B53-6E94FFCD50C4} = {66C74076-CEC8-4587-8CE9-4E0601C8D744}
+		{6D9AD07B-0286-4082-BC30-7706FB6E601F} = {66C74076-CEC8-4587-8CE9-4E0601C8D744}
+		{D304B8BF-0D7A-4CDD-A50B-7FCD9A437496} = {66C74076-CEC8-4587-8CE9-4E0601C8D744}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5562d2e8-7406-4238-98ae-140e65c62f1a}
+	EndGlobalSection
+EndGlobal

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ObjectListViewDemo.Properties {
+namespace ObjectListViewDemo.Properties; 
     using System;
     
     
@@ -180,4 +180,3 @@ namespace ObjectListViewDemo.Properties {
             }
         }
     }
-}

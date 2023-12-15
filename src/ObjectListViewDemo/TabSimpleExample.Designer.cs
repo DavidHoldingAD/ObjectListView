@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabSimpleExample
     {
         /// <summary> 
@@ -435,4 +435,3 @@
         private BrightIdeasSoftware.OLVColumn columnHeaderSalaryRate;
         private BrightIdeasSoftware.OLVColumn olvColumn34;
     }
-}

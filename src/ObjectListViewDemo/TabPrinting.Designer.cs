@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabPrinting
     {
         /// <summary> 
@@ -543,4 +543,3 @@
         private BrightIdeasSoftware.ListViewPrinter listViewPrinter1;
         private System.Windows.Forms.RadioButton rbShowTree;
     }
-}

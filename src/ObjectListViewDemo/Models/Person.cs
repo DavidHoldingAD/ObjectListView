@@ -1,147 +1,124 @@
-using System;
 using System.ComponentModel;
-using System.Drawing;
+
 using BrightIdeasSoftware;
-using BrightIdeasSoftware.Properties;
 
-namespace ObjectListViewDemo.Models
+namespace ObjectListViewDemo.Models;
+
+public class Person : INotifyPropertyChanged
 {
-    public class Person : INotifyPropertyChanged
-    {
-        public bool IsActive = true;
+	public bool IsActive = true;
 
-        public Person(string name)
-        {
-            this.name = name;
-        }
+	public Person(string name)
+	{
+		this.name = name;
+	}
 
-        public Person(string name, string occupation, int culinaryRating, DateTime birthDate, double hourlyRate, bool canTellJokes, string photo, string comments)
-        {
-            this.name = name;
-            this.Occupation = occupation;
-            this.culinaryRating = culinaryRating;
-            this.birthDate = birthDate;
-            this.hourlyRate = hourlyRate;
-            this.CanTellJokes = canTellJokes;
-            this.Comments = comments;
-            this.Photo = photo;
-        }
+	public Person(string name, string occupation, int culinaryRating, DateTime birthDate, double hourlyRate, bool canTellJokes, string photo, string comments)
+	{
+		this.name = name;
+		Occupation = occupation;
+		CulinaryRating = culinaryRating;
+		BirthDate = birthDate;
+		this.hourlyRate = hourlyRate;
+		CanTellJokes = canTellJokes;
+		Comments = comments;
+		Photo = photo;
+	}
 
-        public Person(Person other)
-        {
-            this.name = other.Name;
-            this.Occupation = other.Occupation;
-            this.culinaryRating = other.CulinaryRating;
-            this.birthDate = other.BirthDate;
-            this.hourlyRate = other.GetRate();
-            this.CanTellJokes = other.CanTellJokes;
-            this.Photo = other.Photo;
-            this.Comments = other.Comments;
-            this.MaritalStatus = other.MaritalStatus;
-        }
+	public Person(Person other)
+	{
+		name = other.Name;
+		Occupation = other.Occupation;
+		CulinaryRating = other.CulinaryRating;
+		BirthDate = other.BirthDate;
+		hourlyRate = other.GetRate();
+		CanTellJokes = other.CanTellJokes;
+		Photo = other.Photo;
+		Comments = other.Comments;
+		MaritalStatus = other.MaritalStatus;
+	}
 
-        [OLVIgnore]
-        public Image ImageAspect
-        {
-            get
-            {
-                return Resource1.folder16;
-            }
-        }
+	[OLVIgnore]
+	public Image ImageAspect => Resource1.folder16;
 
-        [OLVIgnore]
-        public string ImageName
-        {
-            get
-            {
-                return "user";
-            }
-        }
+	[OLVIgnore]
+	public string ImageName => "user";
 
-        // Allows tests for properties.
-        [OLVColumn(ImageAspectName = "ImageName")]
-        public string Name
-        {
-            get { return this.name; }
-            set
-            {
-                if (this.name == value) return;
-                this.name = value;
-                this.OnPropertyChanged("Name");
-            }
-        }
+	// Allows tests for properties.
+	[OLVColumn(ImageAspectName = "ImageName")]
+	public string Name
+	{
+		get { return name; }
+		set
+		{
+			if (name == value)
+			{
+				return;
+			}
 
-        private string name;
+			name = value;
+			OnPropertyChanged(nameof(Name));
+		}
+	}
 
-        [OLVColumn(ImageAspectName = "ImageName")]
-        public string Occupation
-        {
-            get { return this.occupation; }
-            set
-            {
-                if (this.occupation == value) return;
-                this.occupation = value;
-                this.OnPropertyChanged("Occupation");
-            }
-        }
+	private string name;
 
-        private string occupation;
+	[OLVColumn(ImageAspectName = "ImageName")]
+	public string Occupation
+	{
+		get { return occupation; }
+		set
+		{
+			if (occupation == value)
+			{
+				return;
+			}
 
-        public int CulinaryRating
-        {
-            get { return this.culinaryRating; }
-            set { this.culinaryRating = value; }
-        }
+			occupation = value;
+			OnPropertyChanged(nameof(Occupation));
+		}
+	}
 
-        private int culinaryRating;
+	private string occupation;
 
-        public DateTime BirthDate
-        {
-            get { return this.birthDate; }
-            set { this.birthDate = value; }
-        }
+	public int CulinaryRating { get; set; }
 
-        private DateTime birthDate;
+	public DateTime BirthDate { get; set; }
 
-        public int YearOfBirth
-        {
-            get { return this.BirthDate.Year; }
-            set { this.BirthDate = new DateTime(value, this.birthDate.Month, this.birthDate.Day); }
-        }
+	public int YearOfBirth
+	{
+		get { return BirthDate.Year; }
+		set { BirthDate = new DateTime(value, BirthDate.Month, BirthDate.Day); }
+	}
 
-        // Allow tests for methods
-        public double GetRate()
-        {
-            return this.hourlyRate;
-        }
+	// Allow tests for methods
+	public double GetRate() => hourlyRate;
 
-        private double hourlyRate;
+	private double hourlyRate;
 
-        public void SetRate(double value)
-        {
-            this.hourlyRate = value;
-        }
+	public void SetRate(double value) => hourlyRate = value;
 
-        // Allows tests for fields.
-        public string Photo;
+	// Allows tests for fields.
+	public string Photo;
 
-        public string Comments;
-        public int serialNumber;
-        public bool? CanTellJokes;
+	public string Comments;
+	public int serialNumber;
+	public bool? CanTellJokes;
 
-        // Allow tests for enums
-        public MaritalStatus MaritalStatus = MaritalStatus.Single;
+	// Allow tests for enums
+	public MaritalStatus MaritalStatus = MaritalStatus.Single;
 
-        #region Implementation of INotifyPropertyChanged
+	#region Implementation of INotifyPropertyChanged
 
-        public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+	private void OnPropertyChanged(string propertyName)
+	{
+		if (PropertyChanged != null)
+		{
+			PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
 
-        #endregion Implementation of INotifyPropertyChanged
-    }
+	#endregion Implementation of INotifyPropertyChanged
 }

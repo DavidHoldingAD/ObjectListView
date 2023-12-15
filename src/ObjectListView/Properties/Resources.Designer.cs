@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BrightIdeasSoftware.Properties {
+namespace BrightIdeasSoftware.Properties; 
     using System;
     
     
@@ -110,4 +110,3 @@ namespace BrightIdeasSoftware.Properties {
             }
         }
     }
-}

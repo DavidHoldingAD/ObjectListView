@@ -25,165 +25,144 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-using System;
 using System.Collections;
-using System.Text;
 
-namespace BrightIdeasSoftware {
+namespace BrightIdeasSoftware;
 
-    /// <summary>
-    /// This class provides a useful base implemention of a clustering
-    /// strategy where the clusters are grouped around the value of a given column.
-    /// </summary>
-    public class ClusteringStrategy : IClusteringStrategy {
 
-        #region Static properties
+/// <summary>
+/// This class provides a useful base implemention of a clustering
+/// strategy where the clusters are grouped around the value of a given column.
+/// </summary>
+public class ClusteringStrategy : IClusteringStrategy
+{
 
-        /// <summary>
-        /// This field is the text that will be shown to the user when a cluster
-        /// key is null. It is exposed so it can be localized.
-        /// </summary>
-        static public string NULL_LABEL = "[null]";
+	#region Static properties
 
-        /// <summary>
-        /// This field is the text that will be shown to the user when a cluster
-        /// key is empty (i.e. a string of zero length). It is exposed so it can be localized.
-        /// </summary>
-        static public string EMPTY_LABEL = "[empty]";
+	/// <summary>
+	/// This field is the text that will be shown to the user when a cluster
+	/// key is null. It is exposed so it can be localized.
+	/// </summary>
+	static public string NULL_LABEL = "[null]";
 
-        /// <summary>
-        /// Gets or sets the format that will be used by default for clusters that only
-        /// contain 1 item. The format string must accept two placeholders:
-        /// - {0} is the cluster key converted to a string
-        /// - {1} is the number of items in the cluster (always 1 in this case)
-        /// </summary>
-        static public string DefaultDisplayLabelFormatSingular {
-            get { return defaultDisplayLabelFormatSingular; }
-            set { defaultDisplayLabelFormatSingular = value; }
-        }
-        static private string defaultDisplayLabelFormatSingular = "{0} ({1} item)";
+	/// <summary>
+	/// This field is the text that will be shown to the user when a cluster
+	/// key is empty (i.e. a string of zero length). It is exposed so it can be localized.
+	/// </summary>
+	static public string EMPTY_LABEL = "[empty]";
 
-        /// <summary>
-        /// Gets or sets the format that will be used by default for clusters that 
-        /// contain 0 or two or more items. The format string must accept two placeholders:
-        /// - {0} is the cluster key converted to a string
-        /// - {1} is the number of items in the cluster
-        /// </summary>
-        static public string DefaultDisplayLabelFormatPlural {
-            get { return defaultDisplayLabelFormatPural; }
-            set { defaultDisplayLabelFormatPural = value; }
-        }
-        static private string defaultDisplayLabelFormatPural = "{0} ({1} items)";
+	/// <summary>
+	/// Gets or sets the format that will be used by default for clusters that only
+	/// contain 1 item. The format string must accept two placeholders:
+	/// - {0} is the cluster key converted to a string
+	/// - {1} is the number of items in the cluster (always 1 in this case)
+	/// </summary>
+	static public string DefaultDisplayLabelFormatSingular { get; set; } = "{0} ({1} item)";
 
-        #endregion
+	/// <summary>
+	/// Gets or sets the format that will be used by default for clusters that 
+	/// contain 0 or two or more items. The format string must accept two placeholders:
+	/// - {0} is the cluster key converted to a string
+	/// - {1} is the number of items in the cluster
+	/// </summary>
+	static public string DefaultDisplayLabelFormatPlural { get; set; } = "{0} ({1} items)";
 
-        #region Life and death
+	#endregion
 
-        /// <summary>
-        /// Create a clustering strategy
-        /// </summary>
-        public ClusteringStrategy() {
-            this.DisplayLabelFormatSingular = DefaultDisplayLabelFormatSingular;
-            this.DisplayLabelFormatPlural = DefaultDisplayLabelFormatPlural;
-        }
+	#region Life and death
 
-        #endregion
+	/// <summary>
+	/// Create a clustering strategy
+	/// </summary>
+	public ClusteringStrategy()
+	{
+		DisplayLabelFormatSingular = DefaultDisplayLabelFormatSingular;
+		DisplayLabelFormatPlural = DefaultDisplayLabelFormatPlural;
+	}
 
-        #region Public properties
+	#endregion
 
-        /// <summary>
-        /// Gets or sets the column upon which this strategy is operating
-        /// </summary>
-        public OLVColumn Column {
-            get { return column; }
-            set { column = value; }
-        }
-        private OLVColumn column;
+	#region Public properties
 
-        /// <summary>
-        /// Gets or sets the format that will be used when the cluster
-        /// contains only 1 item. The format string must accept two placeholders:
-        /// - {0} is the cluster key converted to a string
-        /// - {1} is the number of items in the cluster (always 1 in this case)
-        /// </summary>
-        /// <remarks>If this is not set, the value from 
-        /// ClusteringStrategy.DefaultDisplayLabelFormatSingular will be used</remarks>
-        public string DisplayLabelFormatSingular {
-            get { return displayLabelFormatSingular; }
-            set { displayLabelFormatSingular = value; }
-        }
-        private string displayLabelFormatSingular;
+	/// <summary>
+	/// Gets or sets the column upon which this strategy is operating
+	/// </summary>
+	public OLVColumn Column { get; set; }
 
-        /// <summary>
-        /// Gets or sets the format that will be used when the cluster 
-        /// contains 0 or two or more items. The format string must accept two placeholders:
-        /// - {0} is the cluster key converted to a string
-        /// - {1} is the number of items in the cluster
-        /// </summary>
-        /// <remarks>If this is not set, the value from 
-        /// ClusteringStrategy.DefaultDisplayLabelFormatPlural will be used</remarks>
-        public string DisplayLabelFormatPlural {
-            get { return displayLabelFormatPural; }
-            set { displayLabelFormatPural = value; }
-        }
-        private string displayLabelFormatPural;
+	/// <summary>
+	/// Gets or sets the format that will be used when the cluster
+	/// contains only 1 item. The format string must accept two placeholders:
+	/// - {0} is the cluster key converted to a string
+	/// - {1} is the number of items in the cluster (always 1 in this case)
+	/// </summary>
+	/// <remarks>If this is not set, the value from 
+	/// ClusteringStrategy.DefaultDisplayLabelFormatSingular will be used</remarks>
+	public string DisplayLabelFormatSingular { get; set; }
 
-        #endregion
+	/// <summary>
+	/// Gets or sets the format that will be used when the cluster 
+	/// contains 0 or two or more items. The format string must accept two placeholders:
+	/// - {0} is the cluster key converted to a string
+	/// - {1} is the number of items in the cluster
+	/// </summary>
+	/// <remarks>If this is not set, the value from 
+	/// ClusteringStrategy.DefaultDisplayLabelFormatPlural will be used</remarks>
+	public string DisplayLabelFormatPlural { get; set; }
 
-        #region ICluster implementation
+	#endregion
 
-        /// <summary>
-        /// Get the cluster key by which the given model will be partitioned by this strategy
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        virtual public object GetClusterKey(object model) {
-            return this.Column.GetValue(model);
-        }
+	#region ICluster implementation
 
-        /// <summary>
-        /// Create a cluster to hold the given cluster key
-        /// </summary>
-        /// <param name="clusterKey"></param>
-        /// <returns></returns>
-        virtual public ICluster CreateCluster(object clusterKey) {
-            return new Cluster(clusterKey);
-        }
+	/// <summary>
+	/// Get the cluster key by which the given model will be partitioned by this strategy
+	/// </summary>
+	/// <param name="model"></param>
+	/// <returns></returns>
+	virtual public object GetClusterKey(object model) => Column.GetValue(model);
 
-        /// <summary>
-        /// Gets the display label that the given cluster should use
-        /// </summary>
-        /// <param name="cluster"></param>
-        /// <returns></returns>
-        virtual public string GetClusterDisplayLabel(ICluster cluster) {
-            string s = this.Column.ValueToString(cluster.ClusterKey) ?? NULL_LABEL;
-            if (String.IsNullOrEmpty(s)) 
-                s = EMPTY_LABEL;
-            return this.ApplyDisplayFormat(cluster, s);
-        }
+	/// <summary>
+	/// Create a cluster to hold the given cluster key
+	/// </summary>
+	/// <param name="clusterKey"></param>
+	/// <returns></returns>
+	virtual public ICluster CreateCluster(object clusterKey) => new Cluster(clusterKey);
 
-        /// <summary>
-        /// Create a filter that will include only model objects that
-        /// match one or more of the given values.
-        /// </summary>
-        /// <param name="valuesChosenForFiltering"></param>
-        /// <returns></returns>
-        virtual public IModelFilter CreateFilter(IList valuesChosenForFiltering) {
-            return new OneOfFilter(this.GetClusterKey, valuesChosenForFiltering);
-        }
+	/// <summary>
+	/// Gets the display label that the given cluster should use
+	/// </summary>
+	/// <param name="cluster"></param>
+	/// <returns></returns>
+	virtual public string GetClusterDisplayLabel(ICluster cluster)
+	{
+		string s = Column.ValueToString(cluster.ClusterKey) ?? NULL_LABEL;
+		if (string.IsNullOrEmpty(s))
+		{
+			s = EMPTY_LABEL;
+		}
 
-        /// <summary>
-        /// Create a label that combines the string representation of the cluster
-        /// key with a format string that holds an "X [N items in cluster]" type layout.
-        /// </summary>
-        /// <param name="cluster"></param>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        virtual protected string ApplyDisplayFormat(ICluster cluster, string s) {
-            string format = (cluster.Count == 1) ? this.DisplayLabelFormatSingular : this.DisplayLabelFormatPlural;
-            return String.IsNullOrEmpty(format) ? s : String.Format(format, s, cluster.Count);
-        }
+		return ApplyDisplayFormat(cluster, s);
+	}
 
-        #endregion
-    }
+	/// <summary>
+	/// Create a filter that will include only model objects that
+	/// match one or more of the given values.
+	/// </summary>
+	/// <param name="valuesChosenForFiltering"></param>
+	/// <returns></returns>
+	virtual public IModelFilter CreateFilter(IList valuesChosenForFiltering) => new OneOfFilter(GetClusterKey, valuesChosenForFiltering);
+
+	/// <summary>
+	/// Create a label that combines the string representation of the cluster
+	/// key with a format string that holds an "X [N items in cluster]" type layout.
+	/// </summary>
+	/// <param name="cluster"></param>
+	/// <param name="s"></param>
+	/// <returns></returns>
+	virtual protected string ApplyDisplayFormat(ICluster cluster, string s)
+	{
+		string format = (cluster.Count == 1) ? DisplayLabelFormatSingular : DisplayLabelFormatPlural;
+		return string.IsNullOrEmpty(format) ? s : string.Format(format, s, cluster.Count);
+	}
+
+	#endregion
 }

@@ -25,63 +25,80 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections;
 
-namespace BrightIdeasSoftware {
+namespace BrightIdeasSoftware;
 
-    /// <summary>
-    /// A simple-minded implementation of a Dictionary that can handle null as a key.
-    /// </summary>
-    /// <typeparam name="TKey">The type of the dictionary key</typeparam>
-    /// <typeparam name="TValue">The type of the values to be stored</typeparam>
-    /// <remarks>This is not a full implementation and is only meant to handle
-    /// collecting groups by their keys, since groups can have null as a key value.</remarks>
-    internal class NullableDictionary<TKey, TValue> : Dictionary<TKey, TValue> {
-        private bool hasNullKey;
-        private TValue nullValue;
 
-        new public TValue this[TKey key] {
-            get {
-                if (key != null) 
-                    return base[key];
+/// <summary>
+/// A simple-minded implementation of a Dictionary that can handle null as a key.
+/// </summary>
+/// <typeparam name="TKey">The type of the dictionary key</typeparam>
+/// <typeparam name="TValue">The type of the values to be stored</typeparam>
+/// <remarks>This is not a full implementation and is only meant to handle
+/// collecting groups by their keys, since groups can have null as a key value.</remarks>
+internal class NullableDictionary<TKey, TValue> : Dictionary<TKey, TValue>
+{
+	private bool hasNullKey;
+	private TValue nullValue;
 
-                if (this.hasNullKey)
-                    return this.nullValue;
+	new public TValue this[TKey key]
+	{
+		get
+		{
+			if (key != null)
+			{
+				return base[key];
+			}
 
-                throw new KeyNotFoundException();
-            }
-            set {
-                if (key == null) {
-                    this.hasNullKey = true;
-                    this.nullValue = value;
-                } else
-                    base[key] = value;
-            }
-        }
+			if (hasNullKey)
+			{
+				return nullValue;
+			}
 
-        new public bool ContainsKey(TKey key) {
-            return key == null ? this.hasNullKey : base.ContainsKey(key);
-        }
+			throw new KeyNotFoundException();
+		}
+		set
+		{
+			if (key == null)
+			{
+				hasNullKey = true;
+				nullValue = value;
+			}
+			else
+			{
+				base[key] = value;
+			}
+		}
+	}
 
-        new public IList Keys {
-            get {
-                ArrayList list = new ArrayList(base.Keys);
-                if (this.hasNullKey)
-                    list.Add(null);
-                return list;
-            }
-        }
+	new public bool ContainsKey(TKey key) => key == null ? hasNullKey : base.ContainsKey(key);
 
-        new public IList<TValue> Values {
-            get {
-                List<TValue> list = new List<TValue>(base.Values);
-                if (this.hasNullKey)
-                    list.Add(this.nullValue);
-                return list;
-            }
-        }
-    }
+	new public IList Keys
+	{
+		get
+		{
+			ArrayList list = new(base.Keys);
+			if (hasNullKey)
+			{
+				list.Add(null);
+			}
+
+			return list;
+		}
+	}
+
+	new public IList<TValue> Values
+	{
+		get
+		{
+			List<TValue> list = new(base.Values);
+			if (hasNullKey)
+			{
+				list.Add(nullValue);
+			}
+
+			return list;
+		}
+	}
 }

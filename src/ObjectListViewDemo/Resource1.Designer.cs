@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ObjectListViewDemo {
+namespace ObjectListViewDemo; 
     using System;
     
     
@@ -144,4 +144,3 @@ namespace ObjectListViewDemo {
             }
         }
     }
-}

@@ -13,65 +13,70 @@
  * 2006-10-15  JPP  Initial version
  */
 
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 using BrightIdeasSoftware;
 
-namespace ObjectListViewDemo {
+namespace ObjectListViewDemo;
 
-    public partial class MainForm {
 
-        [STAThread]
-        public static void Main(string[] args) {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
-        }
+public partial class MainForm
+{
 
-        /// <summary>
-        ///
-        /// </summary>
-        public MainForm() {
-            //
-            // The InitializeComponent() call is required for Windows Forms designer support.
-            //
-            InitializeComponent();
-            InitializeExamples();
-        }
+	[STAThread]
+	public static void Main(string[] args)
+	{
+		Application.EnableVisualStyles();
+		Application.SetCompatibleTextRenderingDefault(false);
+		Application.Run(new MainForm());
+	}
 
-        void InitializeExamples() {
-            // Use different font under Vista
-            if (ObjectListView.IsVistaOrLater)
-                this.Font = new Font("Segoe UI", 9);
-             
-            OLVDemoCoordinator coordinator = new OLVDemoCoordinator(this);
+	/// <summary>
+	///
+	/// </summary>
+	public MainForm()
+	{
+		//
+		// The InitializeComponent() call is required for Windows Forms designer support.
+		//
+		InitializeComponent();
+		InitializeExamples();
+	}
 
-            this.tabSimple.Coordinator = coordinator;
-            this.tabComplex.Coordinator = coordinator;
-            this.tabDataSet.Coordinator = coordinator;
-            this.tabFileExplorer1.Coordinator = coordinator;
-            this.tabFastList1.Coordinator = coordinator;
-            this.tabTreeListView1.Coordinator = coordinator;
-            this.tabDataTreeListView1.Coordinator = coordinator;
-            this.tabDragAndDrop1.Coordinator = coordinator;
-            this.tabDescribedTask1.Coordinator = coordinator;
+	private void InitializeExamples()
+	{
+		// Use different font under Vista
+		if (ObjectListView.IsVistaOrLater)
+		{
+			Font = new Font("Segoe UI", 9);
+		}
 
-            // Printing tab is slightly different, since it needs to know about the ObjectListViews from the other tabs
-            this.tabPrinting1.SimpleView = this.tabSimple.ListView;
-            this.tabPrinting1.ComplexView = this.tabComplex.ListView;
-            this.tabPrinting1.DataListView = this.tabDataSet.ListView;
-            this.tabPrinting1.FileExplorerView = this.tabFileExplorer1.ListView;
-            this.tabPrinting1.TreeListView = this.tabTreeListView1.ListView;
-            this.tabPrinting1.Coordinator = coordinator;
+		OLVDemoCoordinator coordinator = new(this);
 
-            //this.tabControl1.SelectTab(this.tabDescribedTasks);
-        }
+		tabSimple.Coordinator = coordinator;
+		tabComplex.Coordinator = coordinator;
+		tabDataSet.Coordinator = coordinator;
+		tabFileExplorer1.Coordinator = coordinator;
+		tabFastList1.Coordinator = coordinator;
+		tabTreeListView1.Coordinator = coordinator;
+		tabDataTreeListView1.Coordinator = coordinator;
+		tabDragAndDrop1.Coordinator = coordinator;
+		tabDescribedTask1.Coordinator = coordinator;
 
-        private void tabControl1_Selected(object sender, TabControlEventArgs e)
-        {
-            if (tabControl1.TabPages[e.TabPageIndex].Name == "tabPagePrinting")
-                this.tabPrinting1.UpdatePrintPreview();
-        }
-    }
+		// Printing tab is slightly different, since it needs to know about the ObjectListViews from the other tabs
+		tabPrinting1.SimpleView = tabSimple.ListView;
+		tabPrinting1.ComplexView = tabComplex.ListView;
+		tabPrinting1.DataListView = tabDataSet.ListView;
+		tabPrinting1.FileExplorerView = tabFileExplorer1.ListView;
+		tabPrinting1.TreeListView = tabTreeListView1.ListView;
+		tabPrinting1.Coordinator = coordinator;
+
+		//this.tabControl1.SelectTab(this.tabDescribedTasks);
+	}
+
+	private void tabControl1_Selected(object sender, TabControlEventArgs e)
+	{
+		if (tabControl1.TabPages[e.TabPageIndex].Name == "tabPagePrinting")
+		{
+			tabPrinting1.UpdatePrintPreview();
+		}
+	}
 }
