@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabDataSet
     {
         /// <summary> 
@@ -570,4 +570,3 @@
         private BrightIdeasSoftware.MultiImageRenderer salaryRenderer;
         private BrightIdeasSoftware.BarRenderer heightRenderer;
     }
-}

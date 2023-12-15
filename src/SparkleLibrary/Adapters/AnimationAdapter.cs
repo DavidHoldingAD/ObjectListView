@@ -29,166 +29,152 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Forms;
 using System.Reflection;
-using System.Drawing;
 using System.Drawing.Text;
 using System.Drawing.Drawing2D;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware;
+
+/// <summary>
+/// An AnimationAdapter makes the given Control able to show an Animation.
+/// </summary>
+/// <remarks>
+/// <para>
+/// To function correctly, the given control must trigger Paint events. 
+/// That is: panels, buttons, labels, picture boxes, user controls, numeric spin controls, 
+/// and (oddly enough) data grid view.
+/// </para>
+/// </remarks>
+/// <example>
+/// AnimationAdapter animatedControl = new AnimationAdapter(this.userControl1);
+/// Animation animation = animatedControl.Animation;
+/// // add sprites to animation
+/// animation.Start();
+/// </example>
+public class AnimationAdapter
 {
-    /// <summary>
-    /// An AnimationAdapter makes the given Control able to show an Animation.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// To function correctly, the given control must trigger Paint events. 
-    /// That is: panels, buttons, labels, picture boxes, user controls, numeric spin controls, 
-    /// and (oddly enough) data grid view.
-    /// </para>
-    /// </remarks>
-    /// <example>
-    /// AnimationAdapter animatedControl = new AnimationAdapter(this.userControl1);
-    /// Animation animation = animatedControl.Animation;
-    /// // add sprites to animation
-    /// animation.Start();
-    /// </example>
-    public class AnimationAdapter
-    {
-        #region Life and death
+	#region Life and death
 
-        public AnimationAdapter(Control control) {
-            this.Animation = new Animation();
-            this.Control = control;
+	public AnimationAdapter(Control control)
+	{
+		Animation = new Animation();
+		Control = control;
 
-            this.Animation.Started += new EventHandler<StartAnimationEventArgs>(Animation_Started);
-            this.Animation.Stopped += new EventHandler<StopAnimationEventArgs>(Animation_Stopped);
-            this.Animation.Redraw += new EventHandler<RedrawEventArgs>(Animation_Redraw);
-            this.Animation.Ticked += new EventHandler<TickEventArgs>(Animation_Ticked);
+		Animation.Started += new EventHandler<StartAnimationEventArgs>(Animation_Started);
+		Animation.Stopped += new EventHandler<StopAnimationEventArgs>(Animation_Stopped);
+		Animation.Redraw += new EventHandler<RedrawEventArgs>(Animation_Redraw);
+		Animation.Ticked += new EventHandler<TickEventArgs>(Animation_Ticked);
 
-            // Make the given control double buffered. 
-            // Use reflection to get around DoubleBuffered being protected
-            PropertyInfo pi = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (pi != null)
-                pi.SetValue(control, true, null);
-        
-            // Default values
-            this.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-        }
+		// Make the given control double buffered. 
+		// Use reflection to get around DoubleBuffered being protected
+		PropertyInfo pi = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+		if (pi != null)
+		{
+			pi.SetValue(control, true, null);
+		}
 
-        #endregion
+		// Default values
+		TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+		SmoothingMode = SmoothingMode.HighQuality;
+	}
 
-        #region Public properties
+	#endregion
 
-        /// <summary>
-        /// Gets or sets the control on which the animation will be drawn
-        /// </summary>
-        public Control Control {
-            get { return control; }
-            private set { control = value; }
-        }
-        private Control control;
+	#region Public properties
 
-        /// <summary>
-        /// Gets or sets the control on which the animation will be drawn
-        /// </summary>
-        public Animation Animation {
-            get { return animation; }
-            private set { animation = value; }
-        }
-        private Animation animation;
+	/// <summary>
+	/// Gets or sets the control on which the animation will be drawn
+	/// </summary>
+	public Control Control { get; private set; }
 
-        /// <summary>
-        /// Gets or sets the smoothing mode that will be applied to the 
-        /// graphic context that is used to draw the animation
-        /// </summary>
-        public SmoothingMode SmoothingMode {
-            get { return smoothingMode; }
-            private set { smoothingMode = value; }
-        }
-        private SmoothingMode smoothingMode;
+	/// <summary>
+	/// Gets or sets the control on which the animation will be drawn
+	/// </summary>
+	public Animation Animation { get; private set; }
 
-        /// <summary>
-        /// Gets or sets the text rendering hint that will be applied to the 
-        /// graphic context that is used to draw the animation
-        /// </summary>
-        public TextRenderingHint TextRenderingHint {
-            get { return textRenderingHint; }
-            private set { textRenderingHint = value; }
-        }
-        private TextRenderingHint textRenderingHint;
+	/// <summary>
+	/// Gets or sets the smoothing mode that will be applied to the 
+	/// graphic context that is used to draw the animation
+	/// </summary>
+	public SmoothingMode SmoothingMode { get; private set; }
+
+	/// <summary>
+	/// Gets or sets the text rendering hint that will be applied to the 
+	/// graphic context that is used to draw the animation
+	/// </summary>
+	public TextRenderingHint TextRenderingHint { get; private set; }
 
 
-        #endregion
+	#endregion
 
-        #region Event handlers
+	#region Event handlers
 
-        protected virtual void Control_Disposed(object sender, EventArgs e) {
-            this.Animation.Stop();
-        }
+	protected virtual void Control_Disposed(object sender, EventArgs e) => Animation.Stop();
 
-        protected virtual void Control_Paint(object sender, PaintEventArgs e) {
+	protected virtual void Control_Paint(object sender, PaintEventArgs e)
+	{
 
-            // Lock this section so we are aren't troubled by interrupts from the ticker thread
-            lock (myLock) {
+		// Lock this section so we are aren't troubled by interrupts from the ticker thread
+		lock (myLock)
+		{
 
-                // Setup the graphics context and draw the animation
-                Graphics g = e.Graphics;
-                g.TextRenderingHint = this.TextRenderingHint;
-                g.SmoothingMode = this.SmoothingMode;
-                this.Animation.Draw(g);
+			// Setup the graphics context and draw the animation
+			Graphics g = e.Graphics;
+			g.TextRenderingHint = TextRenderingHint;
+			g.SmoothingMode = SmoothingMode;
+			Animation.Draw(g);
 
-                // Allow new invalidates on the control
-                allowInvalidate = true;
-            }
-        }
+			// Allow new invalidates on the control
+			allowInvalidate = true;
+		}
+	}
 
-        protected virtual void Animation_Started(object sender, StartAnimationEventArgs e) {
-            this.SetAnimationBounds();
+	protected virtual void Animation_Started(object sender, StartAnimationEventArgs e)
+	{
+		SetAnimationBounds();
 
-            this.Control.Paint += new PaintEventHandler(Control_Paint);
-            this.Control.Disposed += new EventHandler(Control_Disposed);
-        }
+		Control.Paint += new PaintEventHandler(Control_Paint);
+		Control.Disposed += new EventHandler(Control_Disposed);
+	}
 
-        /// <summary>
-        /// Give the animation its outer bounds. 
-        /// </summary>
-        /// <remarks>
-        /// This is normally the DisplayRectangle of the underlying Control.
-        /// </remarks>
-        protected virtual void SetAnimationBounds() {
-            this.Animation.Bounds = this.Control.DisplayRectangle;
-        }
+	/// <summary>
+	/// Give the animation its outer bounds. 
+	/// </summary>
+	/// <remarks>
+	/// This is normally the DisplayRectangle of the underlying Control.
+	/// </remarks>
+	protected virtual void SetAnimationBounds() => Animation.Bounds = Control.DisplayRectangle;
 
-        protected virtual void Animation_Stopped(object sender, StopAnimationEventArgs e) {
-            this.Control.Paint -= new PaintEventHandler(Control_Paint);
-            this.Control.Disposed -= new EventHandler(Control_Disposed);
-        }
+	protected virtual void Animation_Stopped(object sender, StopAnimationEventArgs e)
+	{
+		Control.Paint -= new PaintEventHandler(Control_Paint);
+		Control.Disposed -= new EventHandler(Control_Disposed);
+	}
 
-        protected virtual void Animation_Redraw(object sender, RedrawEventArgs e) {
-            // Don't trigger multiple invalidates
-            lock (myLock) {
-                if (allowInvalidate) {
-                    this.Control.Invalidate();
-                    allowInvalidate = false;
-                }
-            }
-        }
-        object myLock = new object();
+	protected virtual void Animation_Redraw(object sender, RedrawEventArgs e)
+	{
+		// Don't trigger multiple invalidates
+		lock (myLock)
+		{
+			if (allowInvalidate)
+			{
+				Control.Invalidate();
+				allowInvalidate = false;
+			}
+		}
+	}
 
-        protected virtual void Animation_Ticked(object sender, TickEventArgs e) {
-        }
+	private object myLock = new();
 
-        #endregion
+	protected virtual void Animation_Ticked(object sender, TickEventArgs e)
+	{
+	}
 
-        #region Private variables
+	#endregion
 
-        private bool allowInvalidate = true;
+	#region Private variables
 
-        #endregion
-    }
+	private bool allowInvalidate = true;
+
+	#endregion
 }

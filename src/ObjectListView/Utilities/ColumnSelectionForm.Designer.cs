@@ -1,5 +1,5 @@
-namespace BrightIdeasSoftware
-{
+namespace BrightIdeasSoftware;
+
     partial class ColumnSelectionForm
     {
         /// <summary>
@@ -187,4 +187,3 @@ namespace BrightIdeasSoftware
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCancel;
     }
-}

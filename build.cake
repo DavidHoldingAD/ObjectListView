@@ -1,4 +1,3 @@
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -12,19 +11,11 @@ var configuration = Argument("configuration", "Release");
 
 // Define solutions.
 var solutions = new Dictionary<string, string> {
-     { "./src/ObjectListView.sln", "Any" },
+     { "./ObjectListView.sln", "Any" },
 };
 
 // Define directories.
 var buildDir = Directory("./build") + Directory(configuration);
-
-// Define AssemblyInfo source.
-var assemblyInfoVersion = ParseAssemblyInfo("./src/.files/AssemblyInfo.Version.cs");
-
-// Define version.
-var ticks = DateTime.Now.ToString("ddHHmmss");
-var assemblyVersion = assemblyInfoVersion.AssemblyVersion.Replace(".*", "." + ticks.Substring(ticks.Length-8,8));
-var version = EnvironmentVariable("APPVEYOR_BUILD_VERSION") ?? Argument("version", assemblyVersion);
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -42,10 +33,7 @@ Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    foreach (var solution in solutions)
-    {
-        NuGetRestore(solution.Key);
-    }
+    DotNetRestore("./ObjectListView.sln");
 });
 
 Task("Build")
@@ -54,46 +42,33 @@ Task("Build")
 {
     foreach (var solution in solutions)
     {
-        var settings = new MSBuildSettings();
-        settings.SetConfiguration(configuration);
-        MSBuild(solution.Key, settings);
-    }
-});
-
-Task("Build-NuGet-Packages")
-    .Does(() =>
-    {
-        foreach (var folder in new System.IO.FileInfo(solutions.ElementAt(0).Key).Directory.GetDirectories())
+        DotNetBuild(solution.Key, new DotNetBuildSettings
         {
-            foreach (var file in folder.GetFiles("*.nuspec"))
-            {
-        		var path = file.Directory;
-                var assemblyInfo = ParseAssemblyInfo(path + "/Properties/AssemblyInfo.cs");
-                var nuGetPackSettings = new NuGetPackSettings()
-                {
-                    OutputDirectory = buildDir,
-                    IncludeReferencedProjects = false,
-                    //Id = assemblyInfo.Title.Replace(" ", "."),
-                    //Title = assemblyInfo.Title,
-                    Version = version,
-                    //Authors = new[] { assemblyInfoCommon.Company },
-                    //Summary = assemblyInfo.Description,
-                    //Copyright = assemblyInfoCommon.Copyright,
-                    Properties = new Dictionary<string, string>()
-                    {{ "Configuration", configuration }}
-                };
-                NuGetPack(file.FullName, nuGetPackSettings);
-            }
-        }
+            Configuration = configuration,
+            NoRestore = false,
+        });
+    }
+
 });
 
-Task("Run-Unit-Tests")
+Task("Pack")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnit3Settings {
-        NoResults = true
+    foreach (var solution in solutions)
+    {
+        DotNetPack(solution.Key, new DotNetPackSettings
+        {
+            Configuration = configuration,
         });
+    }
+});
+
+Task("CopyPackages")
+    .IsDependentOn("Pack")
+    .Does(() =>
+{
+    CopyFiles("./src/**/*.nupkg", buildDir);
 });
 
 //////////////////////////////////////////////////////////////////////
@@ -101,8 +76,7 @@ Task("Run-Unit-Tests")
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Run-Unit-Tests")
-    .IsDependentOn("Build-NuGet-Packages");
+    .IsDependentOn("CopyPackages");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

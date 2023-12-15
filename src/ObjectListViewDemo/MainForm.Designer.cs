@@ -2,37 +2,37 @@
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace ObjectListViewDemo
+namespace ObjectListViewDemo;
+
+partial class MainForm : System.Windows.Forms.Form
 {
-	partial class MainForm : System.Windows.Forms.Form
+	/// <summary>
+	/// Designer variable used to keep track of non-visual components.
+	/// </summary>
+	private System.ComponentModel.IContainer components = null;
+	
+	/// <summary>
+	/// Disposes resources used by the form.
+	/// </summary>
+	/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+	protected override void Dispose(bool disposing)
 	{
-		/// <summary>
-		/// Designer variable used to keep track of non-visual components.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
-		
-		/// <summary>
-		/// Disposes resources used by the form.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing) {
-				if (components != null) {
-					components.Dispose();
-				}
+		if (disposing) {
+			if (components != null) {
+				components.Dispose();
 			}
-			base.Dispose(disposing);
 		}
-		
-		/// <summary>
-		/// This method is required for Windows Forms designer support.
-		/// Do not change the method contents inside the source code editor. The Forms designer might
-		/// not be able to load this method if it was changed manually.
-		/// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Windows.Forms.Control.set_Text(System.String)")]
-		private void InitializeComponent()
-		{
+		base.Dispose(disposing);
+	}
+	
+	/// <summary>
+	/// This method is required for Windows Forms designer support.
+	/// Do not change the method contents inside the source code editor. The Forms designer might
+	/// not be able to load this method if it was changed manually.
+	/// </summary>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Windows.Forms.Control.set_Text(System.String)")]
+	private void InitializeComponent()
+	{
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -361,8 +361,8 @@ namespace ObjectListViewDemo
             this.PerformLayout();
 
         }
-		private System.Windows.Forms.TabPage tabPage2;
-		private System.Windows.Forms.TabPage tabPage1;
+	private System.Windows.Forms.TabPage tabPage2;
+	private System.Windows.Forms.TabPage tabPage1;
         private TabSimpleExample tabSimple;
         private TabComplexExample tabComplex;
         private TabDataSet tabDataSet;
@@ -388,5 +388,4 @@ namespace ObjectListViewDemo
         private TabPage tabDescribedTasks;
         private TabDescribedTask tabDescribedTask1;
 
-	}
 }

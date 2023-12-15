@@ -1,0 +1,19 @@
+<Project>
+
+	<PropertyGroup>
+		<Company>BrightIdeasSoftware</Company>
+		<Authors>Phillip Piper</Authors>
+		<RepositoryUrl>https://github.com/DavidHoldingAD/ObjectListView.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/DavidHoldingAD/ObjectListView</PackageProjectUrl>
+
+		<Version>2.9.5</Version>
+
+		<LangVersion>11.0</LangVersion>
+		<Nullable>annotations</Nullable>
+		<Deterministic>false</Deterministic>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+</Project>

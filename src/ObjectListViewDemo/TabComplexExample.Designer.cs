@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabComplexExample
     {
         /// <summary> 
@@ -535,4 +535,3 @@
         private BrightIdeasSoftware.MultiImageRenderer cookingSkillRenderer;
         private BrightIdeasSoftware.MultiImageRenderer salaryRenderer;
     }
-}

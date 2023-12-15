@@ -1,5 +1,5 @@
-namespace ObjectListViewDemo
-{
+namespace ObjectListViewDemo;
+
     partial class ColumnSelectionForm
     {
         /// <summary>
@@ -187,4 +187,3 @@ namespace ObjectListViewDemo
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCancel;
     }
-}

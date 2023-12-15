@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabFileExplorer
     {
         /// <summary> 
@@ -463,4 +463,3 @@
         private System.Windows.Forms.Label label36;
 
     }
-}

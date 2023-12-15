@@ -27,43 +27,38 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.ComponentModel;
-using System.Windows.Forms;
+namespace BrightIdeasSoftware;
 
-namespace BrightIdeasSoftware
+public class StartAnimationEventArgs : EventArgs
 {
-    public class StartAnimationEventArgs : EventArgs
-    {
-    }
+}
 
-    public class TickEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Gets or sets if the tick event was completely handled
-        /// </summary>
-        public bool Handled;
-    }
+public class TickEventArgs : EventArgs
+{
+	/// <summary>
+	/// Gets or sets if the tick event was completely handled
+	/// </summary>
+	public bool Handled;
+}
 
-    public class RedrawEventArgs : EventArgs
-    {
-        public RedrawEventArgs() {
-            this.Damage = new Rectangle(-100000, -100000, 200000, 200000);
-        }
+public class RedrawEventArgs : EventArgs
+{
+	public RedrawEventArgs()
+	{
+		Damage = new Rectangle(-100000, -100000, 200000, 200000);
+	}
 
-        public RedrawEventArgs(Rectangle r) {
-            this.Damage = r;
-        }
+	public RedrawEventArgs(Rectangle r)
+	{
+		Damage = r;
+	}
 
-        /// <summary>
-        /// Gets the area of the animation that was damaged
-        /// </summary>
-        public Rectangle Damage;
-    }
+	/// <summary>
+	/// Gets the area of the animation that was damaged
+	/// </summary>
+	public Rectangle Damage;
+}
 
-    public class StopAnimationEventArgs : EventArgs
-    {
-    }
+public class StopAnimationEventArgs : EventArgs
+{
 }

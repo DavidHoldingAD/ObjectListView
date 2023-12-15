@@ -1,5 +1,5 @@
-namespace BrightIdeasSoftware
-{
+namespace BrightIdeasSoftware;
+
     partial class BrushForm
     {
         /// <summary>
@@ -192,4 +192,3 @@ namespace BrightIdeasSoftware
         protected System.Windows.Forms.RadioButton rbNone;
         protected System.Windows.Forms.PropertyGrid propertyGrid1;
     }
-}

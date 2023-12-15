@@ -28,53 +28,51 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
-namespace BrightIdeasSoftware{
+namespace BrightIdeasSoftware;
 
-    /// <summary>
-    /// Implementation of this interface control the selecting of cluster keys
-    /// and how those clusters will be presented to the user
-    /// </summary>
-    public interface IClusteringStrategy {
 
-        /// <summary>
-        /// Gets or sets the column upon which this strategy will operate
-        /// </summary>
-        OLVColumn Column { get; set; }
+/// <summary>
+/// Implementation of this interface control the selecting of cluster keys
+/// and how those clusters will be presented to the user
+/// </summary>
+public interface IClusteringStrategy
+{
 
-        /// <summary>
-        /// Get the cluster key by which the given model will be partitioned by this strategy
-        /// </summary>
-        /// <remarks>If the returned value is an IEnumerable, the given model is considered
-        /// to belong to multiple clusters</remarks>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        object GetClusterKey(object model);
+	/// <summary>
+	/// Gets or sets the column upon which this strategy will operate
+	/// </summary>
+	OLVColumn Column { get; set; }
 
-        /// <summary>
-        /// Create a cluster to hold the given cluster key
-        /// </summary>
-        /// <param name="clusterKey"></param>
-        /// <returns></returns>
-        ICluster CreateCluster(object clusterKey);
+	/// <summary>
+	/// Get the cluster key by which the given model will be partitioned by this strategy
+	/// </summary>
+	/// <remarks>If the returned value is an IEnumerable, the given model is considered
+	/// to belong to multiple clusters</remarks>
+	/// <param name="model"></param>
+	/// <returns></returns>
+	object GetClusterKey(object model);
 
-        /// <summary>
-        /// Gets the display label that the given cluster should use
-        /// </summary>
-        /// <param name="cluster"></param>
-        /// <returns></returns>
-        string GetClusterDisplayLabel(ICluster cluster);
+	/// <summary>
+	/// Create a cluster to hold the given cluster key
+	/// </summary>
+	/// <param name="clusterKey"></param>
+	/// <returns></returns>
+	ICluster CreateCluster(object clusterKey);
 
-        /// <summary>
-        /// Create a filter that will include only model objects that
-        /// match one or more of the given values.
-        /// </summary>
-        /// <param name="valuesChosenForFiltering"></param>
-        /// <returns></returns>
-        IModelFilter CreateFilter(IList valuesChosenForFiltering);
-    }
+	/// <summary>
+	/// Gets the display label that the given cluster should use
+	/// </summary>
+	/// <param name="cluster"></param>
+	/// <returns></returns>
+	string GetClusterDisplayLabel(ICluster cluster);
+
+	/// <summary>
+	/// Create a filter that will include only model objects that
+	/// match one or more of the given values.
+	/// </summary>
+	/// <param name="valuesChosenForFiltering"></param>
+	/// <returns></returns>
+	IModelFilter CreateFilter(IList valuesChosenForFiltering);
 }

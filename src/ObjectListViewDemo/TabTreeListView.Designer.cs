@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabTreeListView
     {
         /// <summary> 
@@ -396,4 +396,3 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxExpanders;
     }
-}

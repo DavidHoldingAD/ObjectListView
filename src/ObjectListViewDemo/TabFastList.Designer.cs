@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabFastList
     {
         /// <summary> 
@@ -501,4 +501,3 @@
         private System.Windows.Forms.ImageList imageListLarge;
         private System.Windows.Forms.ImageList groupImageList;
     }
-}

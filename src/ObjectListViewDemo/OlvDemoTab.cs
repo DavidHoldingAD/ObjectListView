@@ -1,61 +1,65 @@
-using System;
 using System.ComponentModel;
-using System.Windows.Forms;
+
 using BrightIdeasSoftware;
 
-namespace ObjectListViewDemo {
-    public class OlvDemoTab : UserControl {
+namespace ObjectListViewDemo;
 
-        [Browsable(false),
-         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public OLVDemoCoordinator Coordinator
-        {
-            get { return coordinator; }
-            set
-            {
-                coordinator = value;
-                if (value != null) {
-                    this.InitializeTab();
-                    this.SetupGeneralListViewEvents();
-                }
-            }
-        }
-        private OLVDemoCoordinator coordinator;
-        private ObjectListView listView;
+public class OlvDemoTab : UserControl
+{
 
-        protected virtual void InitializeTab() { }
+	[Browsable(false),
+	 DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+	public OLVDemoCoordinator Coordinator
+	{
+		get { return coordinator; }
+		set
+		{
+			coordinator = value;
+			if (value != null)
+			{
+				InitializeTab();
+				SetupGeneralListViewEvents();
+			}
+		}
+	}
+	private OLVDemoCoordinator coordinator;
 
-        public ObjectListView ListView {
-            get { return this.listView; }
-            protected set { this.listView = value; }
-        }
+	protected virtual void InitializeTab() { }
 
-        private void SetupGeneralListViewEvents() {
-            if (this.ListView == null || this.Coordinator == null)
-                return;
+	public ObjectListView ListView { get; protected set; }
 
-            this.ListView.SelectionChanged += delegate(object sender, EventArgs args) {
-                this.Coordinator.HandleSelectionChanged(this.ListView);
-            };
+	private void SetupGeneralListViewEvents()
+	{
+		if (ListView == null || Coordinator == null)
+		{
+			return;
+		}
 
-            this.ListView.HotItemChanged += delegate(object sender, HotItemChangedEventArgs args) {
-                this.Coordinator.HandleHotItemChanged(sender, args);
-            };
+		ListView.SelectionChanged += delegate (object sender, EventArgs args)
+		{
+			Coordinator.HandleSelectionChanged(ListView);
+		};
 
-            this.ListView.GroupTaskClicked += delegate(object sender, GroupTaskClickedEventArgs args) {
-                Coordinator.ShowMessage("Clicked on group task: " + args.Group.Name);
-            };
+		ListView.HotItemChanged += delegate (object sender, HotItemChangedEventArgs args)
+		{
+			Coordinator.HandleHotItemChanged(sender, args);
+		};
 
-            this.ListView.GroupStateChanged += delegate(object sender, GroupStateChangedEventArgs e) {
-                System.Diagnostics.Debug.WriteLine(String.Format("Group '{0}' was {1}{2}{3}{4}{5}{6}",
-                    e.Group.Header,
-                    e.Selected ? "Selected" : "",
-                    e.Focused ? "Focused" : "",
-                    e.Collapsed ? "Collapsed" : "",
-                    e.Unselected ? "Unselected" : "",
-                    e.Unfocused ? "Unfocused" : "",
-                    e.Uncollapsed ? "Uncollapsed" : ""));
-            };
-        }
-    }
+		ListView.GroupTaskClicked += delegate (object sender, GroupTaskClickedEventArgs args)
+		{
+			Coordinator.ShowMessage("Clicked on group task: " + args.Group.Name);
+		};
+
+		ListView.GroupStateChanged += delegate (object sender, GroupStateChangedEventArgs e)
+		{
+			System.Diagnostics.Debug.WriteLine(string.Format("Group '{0}' was {1}{2}{3}{4}{5}{6}",
+				e.Group.Header,
+				e.Selected ? "Selected" : "",
+				e.Focused ? "Focused" : "",
+				e.Collapsed ? "Collapsed" : "",
+				e.Unselected ? "Unselected" : "",
+				e.Unfocused ? "Unfocused" : "",
+				e.Uncollapsed ? "Uncollapsed" : ""));
+		};
+	}
 }

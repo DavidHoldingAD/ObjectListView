@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabDataTreeListView
     {
         /// <summary> 
@@ -188,4 +188,3 @@
         private System.Windows.Forms.Button buttonResetData;
         private System.Windows.Forms.Label label42;
     }
-}

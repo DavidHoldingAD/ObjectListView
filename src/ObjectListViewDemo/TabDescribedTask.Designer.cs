@@ -1,5 +1,5 @@
-﻿namespace ObjectListViewDemo
-{
+﻿namespace ObjectListViewDemo;
+
     partial class TabDescribedTask
     {
         /// <summary> 
@@ -232,4 +232,3 @@
         private BrightIdeasSoftware.OLVColumn olvColumnAction;
         private System.Windows.Forms.ImageList imageListSmall;
     }
-}
